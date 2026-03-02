@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Login from './pages/Login';
 import Register from './pages/Register';
-import Interview from './pages/Interview';
+import InterviewWithFaceApi from './pages/InterviewWithFaceApi'; // Import the new component
 import AdminDashboard from './pages/AdminDashboard';
 import CandidateDetail from './pages/CandidateDetail';
 import Report from './pages/Report';
@@ -47,10 +47,10 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
 
-        {/* Candidate-only */}
+        {/* Candidate-only - Using the new face-api component */}
         <Route
           path="/interview"
-          element={<ProtectedRoute element={<Interview />} requiredRole="candidate" />}
+          element={<ProtectedRoute element={<InterviewWithFaceApi />} requiredRole="candidate" />}
         />
 
         {/* Admin-only */}
