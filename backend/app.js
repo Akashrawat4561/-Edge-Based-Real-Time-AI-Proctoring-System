@@ -1,12 +1,20 @@
 const express = require('express');
 const cors = require('cors');
+const helmet = require('helmet');
+const morgan = require('morgan');
+const rateLimit = require('express-rate-limit');
+const errorHandler = require('./middleware/error');
+const logger = require('./utils/logger');
+
 const app = express();
+
+// ── Security Headers ──────────────────────────────────────────────
+app.use(helmet());
 
 // ── CORS ──────────────────────────────────────────────────────────
 const allowedOrigins = (process.env.CLIENT_URL || 'http://localhost:3000').split(',');
 app.use(cors({
   origin: (origin, callback) => {
-    // Allow requests with no origin (e.g., Postman, mobile apps)
     if (!origin || allowedOrigins.includes(origin)) return callback(null, true);
     callback(new Error(`CORS policy: origin ${origin} not allowed.`));
   },
@@ -19,21 +27,19 @@ app.use(cors({
 app.use(express.json({ limit: '50kb' }));
 app.use(express.urlencoded({ extended: true, limit: '50kb' }));
 
-// ── Security headers ──────────────────────────────────────────────
-app.use((req, res, next) => {
-  res.setHeader('X-Content-Type-Options', 'nosniff');
-  res.setHeader('X-Frame-Options', 'DENY');
-  res.setHeader('X-XSS-Protection', '1; mode=block');
-  next();
-});
-
-// ── Request logging (dev) ─────────────────────────────────────────
-if (process.env.NODE_ENV !== 'production') {
-  app.use((req, res, next) => {
-    console.log(`[${new Date().toISOString()}] ${req.method} ${req.path}`);
-    next();
-  });
+// ── Logging ───────────────────────────────────────────────────────
+if (process.env.NODE_ENV === 'development') {
+  app.use(morgan('dev'));
+} else {
+  app.use(morgan('combined', { stream: { write: message => logger.info(message.trim()) } }));
 }
+
+// ── Rate Limiting ─────────────────────────────────────────────────
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100 // limit each IP to 100 requests per windowMs
+});
+app.use('/api/', limiter);
 
 // ── API Routes ────────────────────────────────────────────────────
 app.use('/api/auth', require('./routes/auth'));
@@ -46,7 +52,7 @@ app.get('/health', (req, res) => res.json({
   status: 'ok',
   timestamp: new Date().toISOString(),
   env: process.env.NODE_ENV,
-  version: '2.0.0',
+  version: '2.1.0',
 }));
 
 // ── 404 handler ───────────────────────────────────────────────────
@@ -55,13 +61,6 @@ app.use((req, res) => {
 });
 
 // ── Global error handler ──────────────────────────────────────────
-app.use((err, req, res, next) => {
-  console.error(`[ERROR] ${err.message}`);
-  const status = err.status || 500;
-  res.status(status).json({
-    error: status === 500 ? 'Internal server error.' : err.message,
-    ...(process.env.NODE_ENV !== 'production' && { stack: err.stack }),
-  });
-});
+app.use(errorHandler);
 
-module.exports = app;
+module.exports = app;

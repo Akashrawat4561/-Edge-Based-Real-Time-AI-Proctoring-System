@@ -266,46 +266,57 @@ const Interview = () => {
       }}>
 
         {/* Left: Status */}
-        <div className="glass" style={{
-          display: 'flex', alignItems: 'center', gap: 12,
-          padding: '10px 18px', borderRadius: 12
+        <div className="glass-premium" style={{
+          display: 'flex', alignItems: 'center', gap: 14,
+          padding: '12px 20px', borderRadius: 16,
+          boxShadow: `0 4px 20px rgba(0,0,0,0.3), inset 0 0 10px ${status.color}22`
         }}>
-          <span className={`status-dot ${status.dot}`} />
-          <span style={{ fontSize: 14, fontWeight: 600, color: status.color }}>{status.label}</span>
+          <div style={{
+            width: 10, height: 10, borderRadius: '50%',
+            background: status.color, boxShadow: `0 0 12px ${status.color}`,
+            animation: status.dot === 'danger' ? 'pulse-ring 1s infinite' : 'none'
+          }} />
+          <span style={{ fontSize: 14, fontWeight: 800, color: status.color, letterSpacing: '0.02em' }}>{status.label.toUpperCase()}</span>
           {networkStatus === 'offline' && (
             <span style={{
-              fontSize: 12, color: '#f59e0b', padding: '2px 8px',
-              background: 'rgba(245,158,11,0.15)', borderRadius: 6, border: '1px solid rgba(245,158,11,0.3)'
+              fontSize: 11, color: '#f59e0b', padding: '3px 10px', fontWeight: 700,
+              background: 'rgba(245,158,11,0.1)', borderRadius: 8, border: '1px solid rgba(245,158,11,0.3)'
             }}>
-              📡 OFFLINE
+              OFFLINE MODE
             </span>
           )}
         </div>
 
         {/* Center: Mode + Timer */}
-        <div className="glass" style={{
-          display: 'flex', alignItems: 'center', gap: 16,
-          padding: '10px 20px', borderRadius: 12
+        <div className="glass-premium" style={{
+          display: 'flex', alignItems: 'center', gap: 20,
+          padding: '12px 28px', borderRadius: 16
         }}>
-          <span style={{ fontSize: 13, color: '#94a3b8', fontWeight: 500 }}>{monitoringMode} Mode</span>
-          <span style={{ color: 'rgba(255,255,255,0.2)', fontSize: 14 }}>|</span>
-          <span className="mono" style={{
-            fontSize: 15, fontWeight: 700, color: 'white',
-            letterSpacing: '0.05em'
-          }}>{formatTime(elapsedTime)}</span>
-          <span style={{ color: 'rgba(255,255,255,0.2)', fontSize: 14 }}>|</span>
-          <span style={{ fontSize: 13, color: '#94a3b8' }}>🎥 {detectionEnabled ? 'Monitoring' : 'Paused'}</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <span style={{ fontSize: 13, color: 'var(--text-secondary)', fontWeight: 600 }}>{monitoringMode}</span>
+            <div style={{ width: 4, height: 4, borderRadius: '50%', background: 'rgba(255,255,255,0.2)' }} />
+            <span className="mono" style={{
+              fontSize: 18, fontWeight: 800, color: 'white',
+              letterSpacing: '0.05em', textShadow: '0 0 10px rgba(255,255,255,0.3)'
+            }}>{formatTime(elapsedTime)}</span>
+          </div>
+          <div style={{ width: 1, height: 20, background: 'rgba(255,255,255,0.1)' }} />
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+             <div className="animate-blink" style={{ width: 8, height: 8, borderRadius: '50%', background: '#ef4444', boxShadow: '0 0 8px #ef4444' }} />
+             <span style={{ fontSize: 12, color: 'var(--text-secondary)', fontWeight: 700, letterSpacing: '0.05em' }}>LIVE MONITORING</span>
+          </div>
         </div>
 
         {/* Right: Risk Meter */}
-        <div className="glass" style={{
-          padding: '8px 18px', borderRadius: 12,
-          display: 'flex', alignItems: 'center', gap: 12
+        <div className="glass-premium" style={{
+          padding: '10px 24px', borderRadius: 16,
+          display: 'flex', alignItems: 'center', gap: 16,
+          border: `1px solid ${status.color}33`
         }}>
           <RiskMeter score={riskScore} size="sm" />
-          <div>
-            <p style={{ fontSize: 11, color: '#64748b', margin: 0, fontWeight: 600 }}>RISK SCORE</p>
-            <p style={{ fontSize: 16, fontWeight: 800, margin: 0, color: status.color }}>{Math.round(riskScore)}</p>
+          <div style={{ textAlign: 'right' }}>
+            <p style={{ fontSize: 10, color: 'var(--text-muted)', margin: '0 0 2px', fontWeight: 800, letterSpacing: '0.05em' }}>INTEGRITY INDEX</p>
+            <p style={{ fontSize: 20, fontWeight: 900, margin: 0, color: status.color, lineHeight: 1 }}>{Math.round(100 - riskScore)}%</p>
           </div>
         </div>
       </div>
@@ -314,87 +325,110 @@ const Interview = () => {
       {warning && (
         <div className={`animate-slide-down ${warningLevel === 'danger' ? 'toast-danger' : 'toast-warning'}`}
           style={{
-            position: 'absolute', top: 80, left: '50%', transform: 'translateX(-50%)',
-            zIndex: 30, fontSize: 14, fontWeight: 600, whiteSpace: 'nowrap', minWidth: 300, textAlign: 'center'
+            position: 'absolute', top: 100, left: '50%', transform: 'translateX(-50%)',
+            zIndex: 30, fontSize: 15, fontWeight: 700, padding: '16px 32px', borderRadius: 16,
+            boxShadow: '0 10px 40px rgba(0,0,0,0.5)', border: '1px solid rgba(255,255,255,0.1)',
+            display: 'flex', alignItems: 'center', gap: 12
           }}>
+          <span style={{ fontSize: 20 }}>{warningLevel === 'danger' ? '🚨' : '⚠️'}</span>
           {warning}
         </div>
       )}
 
       {/* Bottom Left: Session Info */}
-      <div className="glass" style={{
-        position: 'absolute', bottom: 24, left: 24, padding: '12px 18px',
-        borderRadius: 12, zIndex: 20
+      <div className="glass-premium" style={{
+        position: 'absolute', bottom: 32, left: 32, padding: '16px 24px',
+        borderRadius: 20, zIndex: 20, minWidth: 240
       }}>
-        <p style={{ fontSize: 11, color: '#475569', margin: '0 0 4px', fontWeight: 600 }}>CANDIDATE</p>
-        <p style={{ fontSize: 13, color: '#cbd5e1', margin: '0 0 6px', fontWeight: 600 }}>
-          {user.name || 'Unknown'}
-        </p>
-        <p style={{ fontSize: 11, color: '#475569', margin: 0, fontFamily: 'monospace' }}>
-          Events: {events.length} | Warnings: {warningCount}
-        </p>
+        <div style={{ marginBottom: 12 }}>
+          <p style={{ fontSize: 10, color: 'var(--text-muted)', margin: '0 0 4px', fontWeight: 800, letterSpacing: '0.05em' }}>SESSION CANDIDATE</p>
+          <p style={{ fontSize: 16, color: '#f1f5f9', margin: 0, fontWeight: 800 }}>
+            {user.name || 'Anonymous User'}
+          </p>
+        </div>
+        <div style={{ display: 'flex', gap: 16 }}>
+          <div>
+            <p style={{ fontSize: 9, color: 'var(--text-muted)', margin: '0 0 2px', fontWeight: 700 }}>EVENTS</p>
+            <p style={{ fontSize: 14, color: '#e2e8f0', margin: 0, fontWeight: 700 }}>{events.length}</p>
+          </div>
+          <div style={{ width: 1, background: 'rgba(255,255,255,0.05)' }} />
+          <div>
+            <p style={{ fontSize: 9, color: 'var(--text-muted)', margin: '0 0 2px', fontWeight: 700 }}>ALERTS</p>
+            <p style={{ fontSize: 14, color: warningCount > 0 ? '#ef4444' : '#e2e8f0', margin: 0, fontWeight: 700 }}>{warningCount}</p>
+          </div>
+        </div>
       </div>
 
       {/* Bottom Right: Controls */}
       <div style={{
-        position: 'absolute', bottom: 24, right: 24, zIndex: 20,
-        display: 'flex', flexDirection: 'column', gap: 8, alignItems: 'flex-end'
+        position: 'absolute', bottom: 32, right: 32, zIndex: 20,
+        display: 'flex', gap: 12
       }}>
-        <button onClick={() => setShowEndConfirm(true)} className="btn-danger"
-          style={{ padding: '12px 24px', fontSize: 14 }}>
-          🚪 End Session
-        </button>
         <button onClick={() => setDetectionEnabled(p => !p)} className="btn-ghost"
-          style={{ padding: '8px 16px', fontSize: 12 }}>
-          {detectionEnabled ? '⏸ Pause Monitoring' : '▶ Resume Monitoring'}
+          style={{ padding: '12px 20px', fontSize: 13, fontWeight: 700, borderRadius: 16 }}>
+          {detectionEnabled ? '⏸ Pause System' : '▶ Resume System'}
+        </button>
+        <button onClick={() => setShowEndConfirm(true)} className="btn-danger"
+          style={{ padding: '12px 28px', fontSize: 14, fontWeight: 800, borderRadius: 16, boxShadow: '0 8px 25px rgba(239, 68, 68, 0.4)' }}>
+          🚪 Finalize Session
         </button>
       </div>
 
       {/* Mode Switcher */}
-      <div className="glass" style={{
-        position: 'absolute', bottom: 24, left: '50%', transform: 'translateX(-50%)',
-        zIndex: 20, padding: '6px', borderRadius: 12, display: 'flex', gap: 4
+      <div className="glass-premium" style={{
+        position: 'absolute', bottom: 32, left: '50%', transform: 'translateX(-50%)',
+        zIndex: 20, padding: '6px', borderRadius: 18, display: 'flex', gap: 4,
+        background: 'rgba(0,0,0,0.4)', border: '1px solid rgba(255,255,255,0.1)'
       }}>
         {['Exam', 'Interview', 'Certification'].map(mode => (
           <button key={mode} onClick={() => setMonitoringMode(mode)}
             style={{
-              padding: '6px 14px', borderRadius: 8, border: 'none', cursor: 'pointer',
-              fontSize: 12, fontWeight: 600, transition: 'all 0.2s',
-              background: monitoringMode === mode ? 'rgba(59,130,246,0.8)' : 'transparent',
-              color: monitoringMode === mode ? 'white' : '#64748b'
+              padding: '8px 18px', borderRadius: 12, border: 'none', cursor: 'pointer',
+              fontSize: 12, fontWeight: 800, transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+              background: monitoringMode === mode ? 'rgba(59,130,246,0.9)' : 'transparent',
+              color: monitoringMode === mode ? 'white' : 'var(--text-muted)',
+              boxShadow: monitoringMode === mode ? '0 4px 12px rgba(59,130,246,0.3)' : 'none'
             }}>
-            {mode}
+            {mode.toUpperCase()}
           </button>
         ))}
       </div>
 
       {/* End Confirm Dialog */}
       {showEndConfirm && (
-        <div style={{
-          position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.7)',
-          display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 50
+        <div className="animate-fade-in" style={{
+          position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.85)',
+          backdropFilter: 'blur(8px)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 100
         }}>
-          <div className="glass animate-slide-down" style={{
-            padding: 40, borderRadius: 20,
-            maxWidth: 400, textAlign: 'center'
+          <div className="glass-premium animate-slide-up" style={{
+            padding: 48, borderRadius: 32,
+            maxWidth: 440, textAlign: 'center',
+            border: '1px solid rgba(255,255,255,0.1)',
+            boxShadow: '0 20px 60px rgba(0,0,0,0.6)'
           }}>
-            <div style={{ fontSize: 40, marginBottom: 16 }}>⚠️</div>
-            <h3 style={{ fontSize: 20, fontWeight: 700, marginBottom: 12, color: '#f1f5f9' }}>
-              End Session?
+            <div style={{ 
+              width: 80, height: 80, borderRadius: '50%', background: 'rgba(239,68,68,0.1)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 40,
+              margin: '0 auto 24px'
+            }}>⚠️</div>
+            <h3 style={{ fontSize: 28, fontWeight: 900, marginBottom: 16, color: '#f1f5f9', letterSpacing: '-0.02em' }}>
+              Finalize Session?
             </h3>
-            <p style={{ color: '#94a3b8', fontSize: 14, marginBottom: 28 }}>
-              This will end your exam session. Your final risk score is{' '}
-              <strong style={{ color: status.color }}>{Math.round(riskScore)}</strong>. Are you sure?
+            <p style={{ color: 'var(--text-secondary)', fontSize: 16, marginBottom: 40, lineHeight: 1.6 }}>
+              You are about to terminate the proctoring session. Your integrity index is calculated at {' '}
+              <strong style={{ color: status.color, fontSize: 18 }}>{Math.round(100 - riskScore)}%</strong>. This action cannot be undone.
             </p>
-            <div style={{ display: 'flex', gap: 12 }}>
+            <div style={{ display: 'flex', gap: 16 }}>
               <button className="btn-ghost" onClick={() => setShowEndConfirm(false)}
-                style={{ flex: 1, padding: '12px' }}>Cancel</button>
+                style={{ flex: 1, padding: '16px', fontWeight: 700 }}>Back to Session</button>
               <button className="btn-danger" onClick={handleEndSession}
-                style={{ flex: 1, padding: '12px' }}>End Session</button>
+                style={{ flex: 1, padding: '16px', fontWeight: 800 }}>Confirm & End</button>
             </div>
           </div>
         </div>
       )}
+
     </div>
   );
 };

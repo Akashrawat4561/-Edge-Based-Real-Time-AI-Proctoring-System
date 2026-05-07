@@ -101,164 +101,167 @@ const Login = () => {
         }} />
       ))}
 
-      <div className="animate-slide-down" style={{ width: '100%', maxWidth: 440, padding: '0 24px', zIndex: 10 }}>
+      <div className="animate-slide-down" style={{ width: '100%', maxWidth: 460, padding: '0 24px', zIndex: 10 }}>
 
         {/* Logo / Brand */}
-        <div style={{ textAlign: 'center', marginBottom: 32 }}>
+        <div style={{ textAlign: 'center', marginBottom: 40 }}>
           <div style={{
             display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-            width: 64, height: 64, borderRadius: 16,
-            background: 'linear-gradient(135deg, #3b82f6, #7c3aed)',
-            marginBottom: 16, boxShadow: '0 8px 30px rgba(59,130,246,0.4)'
+            width: 72, height: 72, borderRadius: 20,
+            background: 'linear-gradient(135deg, #3b82f6, #6366f1)',
+            marginBottom: 20, boxShadow: '0 12px 40px rgba(59, 130, 246, 0.4)',
+            position: 'relative'
           }}>
-            <span style={{ fontSize: 28 }}>🛡️</span>
+            <span style={{ fontSize: 32 }}>🛡️</span>
+            <div style={{
+              position: 'absolute', inset: -4, borderRadius: 24,
+              border: '2px solid rgba(59,130,246,0.3)', pointerEvents: 'none'
+            }} />
           </div>
-          <h1 className="gradient-text" style={{ fontSize: 28, fontWeight: 800, margin: '0 0 4px' }}>
+          <h1 className="gradient-text" style={{ fontSize: 36, fontWeight: 900, margin: '0 0 8px', letterSpacing: '-0.02em' }}>
             ProctorAI
           </h1>
-          <p style={{ color: '#64748b', fontSize: 14, margin: 0 }}>
-            AI-Powered Secure Examination Platform
+          <p style={{ color: 'var(--text-secondary)', fontSize: 16, margin: 0, fontWeight: 500 }}>
+            Next-Gen Secure Examination Platform
           </p>
         </div>
 
         {/* Card */}
-        <div className="glass" style={{ borderRadius: 20, padding: 36 }}>
+        <div className="glass-premium" style={{ borderRadius: 28, padding: '40px 44px', border: '1px solid rgba(255,255,255,0.1)' }}>
 
           {step === 1 && (
             <>
-              <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 24, color: '#f1f5f9' }}>
-                {formData.email && false ? '' : 'Sign in to Continue'}
-              </h2>
+              <div style={{ marginBottom: 32 }}>
+                <h2 style={{ fontSize: 24, fontWeight: 800, marginBottom: 8, color: '#f1f5f9' }}>
+                  Welcome Back
+                </h2>
+                <p style={{ color: 'var(--text-muted)', fontSize: 14, margin: 0 }}>
+                  Enter your credentials to access the secure portal
+                </p>
+              </div>
 
               {error && (
-                <div className="toast-danger animate-slide-down" style={{ marginBottom: 20, fontSize: 14 }}>
-                  ⚠️ {error}
+                <div className="toast-danger animate-slide-down" style={{ marginBottom: 24, fontSize: 14, display: 'flex', alignItems: 'center', gap: 10 }}>
+                  <span>⚠️</span> {error}
                 </div>
               )}
 
               <form onSubmit={handleSubmit}>
-                <div style={{ marginBottom: 18 }}>
-                  <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: '#94a3b8', marginBottom: 8 }}>
+                <div style={{ marginBottom: 20 }}>
+                  <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: 'var(--text-secondary)', marginBottom: 10, letterSpacing: '0.05em' }}>
                     EMAIL ADDRESS
                   </label>
                   <input name="email" type="email" required value={formData.email}
                     onChange={handleChange} className="form-input"
-                    placeholder="candidate@example.com" />
+                    placeholder="name@company.com" />
                 </div>
 
-                <div style={{ marginBottom: 18 }}>
-                  <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: '#94a3b8', marginBottom: 8 }}>
+                <div style={{ marginBottom: 20 }}>
+                  <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: 'var(--text-secondary)', marginBottom: 10, letterSpacing: '0.05em' }}>
                     PASSWORD
                   </label>
                   <input name="password" type="password" required value={formData.password}
                     onChange={handleChange} className="form-input"
-                    placeholder="Enter your password" />
+                    placeholder="••••••••" />
                 </div>
 
-                <div style={{ marginBottom: 24 }}>
-                  <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: '#94a3b8', marginBottom: 8 }}>
+                <div style={{ marginBottom: 32 }}>
+                  <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: 'var(--text-secondary)', marginBottom: 10, letterSpacing: '0.05em' }}>
                     EXAM ID (OPTIONAL)
                   </label>
                   <input name="examId" type="text" value={formData.examId}
                     onChange={handleChange} className="form-input"
-                    placeholder="e.g. EXAM-2024-001" />
+                    placeholder="EXAM-2024-X" />
                 </div>
 
                 <button type="submit" className="btn-primary" disabled={loading}
-                  style={{ width: '100%', padding: '14px', fontSize: 16 }}>
+                  style={{ width: '100%', padding: '16px', fontSize: 16, fontWeight: 700 }}>
                   {loading ? (
-                    <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}>
-                      <span style={{
-                        width: 16, height: 16, border: '2px solid white', borderTopColor: 'transparent',
-                        borderRadius: '50%', display: 'inline-block', animation: 'spin 0.8s linear infinite'
+                    <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10 }}>
+                      <span className="animate-spin" style={{
+                        width: 18, height: 18, border: '3px solid rgba(255,255,255,0.3)', borderTopColor: 'white',
+                        borderRadius: '50%', display: 'inline-block'
                       }} />
-                      Authenticating...
+                      Verifying...
                     </span>
-                  ) : 'Sign In →'}
+                  ) : 'Sign In To Portal →'}
                 </button>
               </form>
 
-              <div style={{ textAlign: 'center', marginTop: 20 }}>
-                <span style={{ color: '#64748b', fontSize: 14 }}>Don't have an account? </span>
-                <Link to="/register" style={{ color: '#3b82f6', fontSize: 14, fontWeight: 600, textDecoration: 'none' }}>
-                  Register here
+              <div style={{ textAlign: 'center', marginTop: 28 }}>
+                <span style={{ color: 'var(--text-muted)', fontSize: 14 }}>New candidate? </span>
+                <Link to="/register" style={{ color: 'var(--accent-blue)', fontSize: 14, fontWeight: 700, textDecoration: 'none', marginLeft: 4 }}>
+                  Create Account
                 </Link>
               </div>
-
-              {process.env.NODE_ENV === 'development' && (
-                <div style={{
-                  marginTop: 24, padding: 16, background: 'rgba(255,255,255,0.03)',
-                  borderRadius: 12, border: '1px solid rgba(255,255,255,0.06)'
-                }}>
-                  <p style={{ fontSize: 12, color: '#475569', fontWeight: 600, marginBottom: 8 }}>
-                    🔧 DEV CREDENTIALS
-                  </p>
-                  <p style={{ fontSize: 11, color: '#334155', margin: '4px 0', fontFamily: 'monospace' }}>
-                    Admin: admin@example.com / password123
-                  </p>
-                  <p style={{ fontSize: 11, color: '#334155', margin: '4px 0', fontFamily: 'monospace' }}>
-                    Candidate: candidate@example.com / password123
-                  </p>
-                </div>
-              )}
             </>
           )}
 
           {step === 2 && (
             <div className="animate-fade-in">
-              <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 8, color: '#f1f5f9' }}>
-                Device Verification
-              </h2>
-              <p style={{ color: '#64748b', fontSize: 14, marginBottom: 28 }}>
-                Before starting your exam, we need to verify device permissions.
-              </p>
+              <div style={{ marginBottom: 32 }}>
+                <h2 style={{ fontSize: 24, fontWeight: 800, marginBottom: 8, color: '#f1f5f9' }}>
+                  Device Check
+                </h2>
+                <p style={{ color: 'var(--text-muted)', fontSize: 14, margin: 0 }}>
+                  We need to ensure your setup meets requirements
+                </p>
+              </div>
 
               {error && (
-                <div className="toast-danger animate-slide-down" style={{ marginBottom: 20, fontSize: 14 }}>
+                <div className="toast-danger animate-slide-down" style={{ marginBottom: 24, fontSize: 14 }}>
                   ⚠️ {error}
                 </div>
               )}
 
               {/* Checks */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 28 }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 14, marginBottom: 36 }}>
                 {[
-                  { label: 'Camera Access', icon: '🎥', ok: cameraGranted },
+                  { label: 'Camera Access', icon: '📷', ok: cameraGranted },
                   { label: 'Microphone Access', icon: '🎙️', ok: micGranted },
-                  { label: 'Internet Connection', icon: '🌐', ok: networkOk },
+                  { label: 'Network Connection', icon: '⚡', ok: networkOk },
                 ].map(item => (
                   <div key={item.label} style={{
                     display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                    padding: '14px 18px', borderRadius: 12,
+                    padding: '16px 20px', borderRadius: 16,
                     background: item.ok ? 'rgba(16,185,129,0.08)' : 'rgba(255,255,255,0.03)',
-                    border: `1px solid ${item.ok ? 'rgba(16,185,129,0.3)' : 'rgba(255,255,255,0.07)'}`
+                    border: `1px solid ${item.ok ? 'rgba(16,185,129,0.2)' : 'rgba(255,255,255,0.08)'}`,
+                    transition: 'all 0.3s ease'
                   }}>
-                    <span style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                      <span style={{ fontSize: 18 }}>{item.icon}</span>
-                      <span style={{ fontSize: 14, fontWeight: 500, color: '#cbd5e1' }}>{item.label}</span>
+                    <span style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+                      <span style={{ fontSize: 20 }}>{item.icon}</span>
+                      <span style={{ fontSize: 15, fontWeight: 600, color: item.ok ? '#e2e8f0' : '#94a3b8' }}>{item.label}</span>
                     </span>
-                    <span style={{ fontSize: 18 }}>{item.ok ? '✅' : '⏳'}</span>
+                    <span style={{
+                      width: 24, height: 24, borderRadius: '50%',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      background: item.ok ? '#10b981' : 'rgba(255,255,255,0.05)',
+                      fontSize: 12
+                    }}>
+                      {item.ok ? '✓' : ''}
+                    </span>
                   </div>
                 ))}
               </div>
 
               {!cameraGranted ? (
                 <button className="btn-primary" onClick={requestDevicePermissions}
-                  style={{ width: '100%', padding: '14px', fontSize: 15, marginBottom: 12 }}>
-                  🎥 Grant Camera & Microphone Access
+                  style={{ width: '100%', padding: '16px', fontSize: 16, marginBottom: 16 }}>
+                  🎥 Grant System Permissions
                 </button>
               ) : (
                 <button className="btn-primary" onClick={proceedToInterview}
                   style={{
-                    width: '100%', padding: '14px', fontSize: 15, marginBottom: 12,
+                    width: '100%', padding: '16px', fontSize: 16, marginBottom: 16,
                     background: 'linear-gradient(135deg, #10b981, #059669)',
-                    boxShadow: '0 4px 15px rgba(16,185,129,0.4)'
+                    boxShadow: '0 8px 30px rgba(16,185,129,0.3)'
                   }}>
-                  ✅ Start Exam Session →
+                  🚀 Start Exam Session
                 </button>
               )}
               <button className="btn-ghost" onClick={() => setStep(1)}
-                style={{ width: '100%', padding: '12px', fontSize: 14 }}>
-                ← Back
+                style={{ width: '100%', padding: '14px', fontSize: 14, fontWeight: 600 }}>
+                ← Change Account
               </button>
             </div>
           )}
@@ -266,8 +269,10 @@ const Login = () => {
       </div>
 
       <style>{`
-        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .animate-spin { animation: spin 1s linear infinite; }
       `}</style>
+
     </div>
   );
 };
